@@ -21,14 +21,9 @@ namespace Graphics
             }
             
         public:
-            Canvas(unsigned int c_width, unsigned int c_height, Vector2 c_pos) : Width(c_width), Height(c_height), Pos(c_pos)
-            {
-
-            }
-            ~Canvas()
-            {
-
-            }
+            Canvas(unsigned int c_width, unsigned int c_height, Vector2 c_pos) : Width(c_width), Height(c_height), Pos(c_pos){}
+            ~Canvas(){}
+            
             void DrawBorder()
             {
                 //TopLeft -> Bottom Left
@@ -58,6 +53,9 @@ namespace Graphics
                 Vector2 new_pos = {Width - obj_pos.x, obj_pos.y};
                 return new_pos;
             }
+
+            //Setters
+
             void IncrementX(int step = 1)
             {
                 Pos.x += step;
@@ -66,9 +64,25 @@ namespace Graphics
             {
                 Pos.y += step;
             }
+            void SetY(int Y)
+            {
+                Pos.y = Y;
+            }
+            
             void ChangePos(Vector2 new_pos)
             {
                 Pos = new_pos;
+            }
+
+            //Getters
+
+            Vector2 GetPos()
+            {
+                return Pos;
+            }
+            unsigned int GetHeight()
+            {
+                return Height;
             }
 
     };

@@ -138,14 +138,6 @@ class Chip8Display : public Graphics::Window
             {
                 CloseWindow();
             }
-            
-            if(IsKeyDown(KEY_LEFT))
-            {
-                MainScreen->IncrementX(-1);
-            } else if(IsKeyDown(KEY_RIGHT))
-            {
-                MainScreen->IncrementX(1);
-            }
             if(IsKeyDown(KEY_UP))
             {
                 MainScreen->IncrementY(-1);
@@ -153,6 +145,14 @@ class Chip8Display : public Graphics::Window
             {
                 MainScreen->IncrementY(1);
             }
+            if(MainScreen->GetPos().y < 0)
+            {
+                MainScreen->SetY(0);
+            } else if (MainScreen->GetPos().y + MainScreen->GetHeight() > W_height)
+            {
+                MainScreen->SetY(W_height - MainScreen->GetHeight());
+            }
+            
             KeyPad();
             Cpu->Cycle();
         }
