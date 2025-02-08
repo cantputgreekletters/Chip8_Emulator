@@ -15,6 +15,7 @@ class Chip8Display : public Graphics::Window
         unsigned int PixelSize;
         Graphics::Canvas * MainScreen;
         Graphics::Canvas * DebugScreen;
+        Graphics::TextInput * TxtInput;
         uint16_t * current_instruction_ptr;
         uint8_t * Registers_ptr;
         uint16_t * IRegister_ptr;
@@ -152,7 +153,12 @@ class Chip8Display : public Graphics::Window
             {
                 MainScreen->SetY(W_height - MainScreen->GetHeight());
             }
-            
+            if(TxtInput->IsFocused() && IsKeyPressed(KEY_ENTER))
+            {
+                Cpu->UnloadROM();
+                Cpu->LoadROM(TxtInput->GetFilePath().data());
+            }
+            TxtInput->Update();
             KeyPad();
             Cpu->Cycle();
         }
@@ -175,6 +181,8 @@ class Chip8Display : public Graphics::Window
             MainScreen->DrawBorder();
             DrawDebug();
             DebugScreen->DrawBorder();
+            DrawText("Provide name of ROM:",10,W_height - 70,16, GREEN);
+            TxtInput->Draw();
             DrawFPS(0,0);
         }
         void Init()
@@ -195,6 +203,7 @@ class Chip8Display : public Graphics::Window
             Cpu = CPU;
             MainScreen = new Graphics::Canvas(64 * pixel_size,32 * pixel_size, Vector2{0,0});
             DebugScreen = new Graphics::Canvas(1000 - 64 * pixel_size, W_height, Vector2{(float)(64 * pixel_size) + 1, 0});
+            TxtInput = new Graphics::TextInput(Vector2{10, (float)W_height - 50});
             Init();
             clear();
         }
@@ -203,6 +212,7 @@ class Chip8Display : public Graphics::Window
         {
             delete MainScreen;
             delete DebugScreen;
+            delete TxtInput;
             delete Cpu;
             clear();
         }

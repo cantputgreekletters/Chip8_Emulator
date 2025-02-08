@@ -33,6 +33,7 @@ class Chip8
         bool EXIT = false; //TODO implement exit
 
         bool WillLog = false;
+        bool HasLoadedROM = false;
 
         uint8_t fontset[80] =
         {
@@ -628,7 +629,10 @@ public:
     }
     void Cycle()
     {
-
+        if(! HasLoadedROM)
+        {
+            return;
+        }
         if(ProgramCounter < 0x200)
         {
             std::cout << "Program counter is less than 0x200\n";
@@ -680,6 +684,32 @@ public:
     {
         Keypad[key_idx] = state;
     }
+
+    void UnloadROM()
+    {
+        for (int i = 0; i < 16; i++)
+        {
+            Keypad[i] = false;
+            Stack[i] = 0;
+            Memory[i] = 0;
+            Registers[i] = 0u;
+        }
+        for (int i = 16; i < 4096; i++)
+        {
+            Memory[i] = 0;
+        }
+        IRegister = 0;
+        ProgramCounter = 0x200;
+        StackPointer = 0;
+        DelayTimer = 60;
+        SoundTimer = 60;
+        //Clears screen
+        for(unsigned int i = 0; i < 64*32; i++)
+        {
+            display_pixels[i] = false;
+        }
+    }
+
     void LoadROM(char const* filename)
     {
         const unsigned int START_ADDRESS = 0x200;
@@ -704,10 +734,11 @@ public:
             // Free the buffer
             delete[] buffer;
 
+            HasLoadedROM = true;
         } else
         {
-            std::cout << "Failed to Load ROM!\n";
-            exit(-1);
+            HasLoadedROM = false;
+            std::cout << "Failed to Load ROM with name: " << filename << '\n';
         }
         
     }
