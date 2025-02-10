@@ -1,4 +1,4 @@
-# Chip8_Emulator
+# Chip8 Emulator
  An emulator for the Chip8 written in cpp and using raylib for the display.
 
 # Keys
@@ -28,4 +28,4 @@ Some other keys are:
 ***
 
 # Picture of usage
-![Picture](https://github.com/cantputgreekletters/Chip8_Emulator/blob/main/images/img1.png))
+![Picture](https://github.com/cantputgreekletters/Chip8_Emulator/blob/main/images/img1.png)
